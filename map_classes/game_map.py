@@ -20,7 +20,7 @@ class GameMap:
     
     # Generates and connect a limited number of rooms to create a random dungeon.
     def create_map(self):
-        for r in range(MAX_ROOMS):
+        for _ in range(MAX_ROOMS):
             new_room = self.create_room()
             if self.valid_room(new_room):
                 self.draw_room(new_room)

@@ -13,8 +13,6 @@ screen_height = 50
 
 class Game:
     def __init__(self):
-        self.screen_width = 80
-        self.screen_height = 50
         self.console = self.create_console()
         self.game_map = GameMap()
         self.entities = self.create_entities()
@@ -44,7 +42,7 @@ class Game:
     # Renders the game map and entities, checks for input, then performs an action based on input. Loops while window is open.
     def game_loop(self):
         while not tcod.console_is_window_closed():
-            renderer.render_all(self.console, self.entities, self.game_map, self.screen_width, self.screen_height)
+            renderer.render_all(self.console, self.entities, self.game_map, screen_width, screen_height)
             action = self.check_for_input()
             if action is not None:
                 self.perform(action)
