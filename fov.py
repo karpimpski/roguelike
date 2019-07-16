@@ -12,6 +12,7 @@ class FOV:
         self.map = self.initialize_map()
 
     def initialize_map(self):
+        """Creates TCOD map with data from the game map."""
         fov_map = tcod.map.Map(MAP_WIDTH, MAP_HEIGHT)
         for y in range(MAP_HEIGHT):
             for x in range(MAP_WIDTH):
@@ -25,5 +26,6 @@ class FOV:
         return fov_map
 
     def compute(self, x, y):
+        """Recompute TCOD map's FOV."""
         tcod.map_compute_fov(self.map, x, y, self.radius, self.light_walls, 0)
 
