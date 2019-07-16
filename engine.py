@@ -14,6 +14,7 @@ screen_height = 50
 
 class Game:
     def __init__(self):
+        """Initializes game variables then begins game loop."""
         self.game_map = GameMap()
         self.console = self.create_console()
         self.entities = self.create_entities()
@@ -27,7 +28,13 @@ class Game:
             "sprites.png", tcod.FONT_TYPE_GREYSCALE | tcod.FONT_LAYOUT_TCOD, 32, 10
         )
         console = tcod.console_init_root(
-            screen_width, screen_height, "Roguelike", False
+            screen_width,
+            screen_height,
+            "Roguelike",
+            False,
+            tcod.RENDERER_OPENGL2,
+            "F",
+            True,
         )
         self.map_ascii_codes()
         return console
@@ -48,7 +55,7 @@ class Game:
 
     def game_loop(self):
         """Renders the game map and entities, checks for input, then performs an action based on input. Loops while window is open."""
-        while not tcod.console_is_window_closed():
+        while True:
             self.renderer.render_all(
                 self.entities, screen_width, screen_height, self.player.x, self.player.y
             )
@@ -58,10 +65,11 @@ class Game:
 
     def check_for_input(self):
         """Checks for input and returns an object containing instructions (e.g. { 'move': (0, 1) } or { 'exit': True })."""
-        key = tcod.Key()
-        mouse = tcod.Mouse()
-        tcod.sys_check_for_event(tcod.EVENT_KEY_PRESS, key, mouse)
-        return input_handler.handle_keys(key)
+        for event in tcod.event.get():
+            if event.type == "QUIT":
+                raise SystemExit
+            elif event.type == "KEYDOWN":
+                return input_handler.handle_keys(event.sym)
 
     def perform(self, action):
         """Interperets and performs an action."""
