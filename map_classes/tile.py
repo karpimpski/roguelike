@@ -1,5 +1,5 @@
 class Tile:
-    def __init__(self, img, blocked, block_sight = None):
+    def __init__(self, img, blocked, block_sight=None):
         self.img = img
         self.blocked = blocked
         if block_sight is None:
