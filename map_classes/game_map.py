@@ -1,14 +1,18 @@
+"""Game Map class."""
+
 from random import randint
 
-from map_classes.tile import Tile
 from map_classes.room import Room
 from map_classes.generic_tiles import Wall, Floor
-from map_classes.map_constants import *
-import imgs
+import map_classes.settings as map_settings
 
 
 class GameMap:
+    """Represents the game map; includes map creation and logic methods."""
+
     def __init__(self):
+        self.width = map_settings.MAP_WIDTH
+        self.height = map_settings.MAP_HEIGHT
         self.tiles = self.initialize_tiles()
         self.rooms = []
         self.create_map()
@@ -16,23 +20,24 @@ class GameMap:
     # MAP CREATION METHODS.
     def initialize_tiles(self):
         """Initializes all tiles as walls."""
-        return [[Wall() for y in range(MAP_HEIGHT)] for x in range(MAP_WIDTH)]
+        return [[Wall() for y in range(self.height)] for x in range(self.width)]
 
     def create_map(self):
         """Initializes all tiles as walls."""
-        for _ in range(MAX_ROOMS):
+        for _ in range(map_settings.MAX_ROOMS):
             new_room = self.create_room()
             if self.valid_room(new_room):
                 self.draw_room(new_room)
                 if len(self.rooms) > 0:
-                    self.connect_rooms(self.rooms[len(self.rooms) - 1], new_room)
+                    self.connect_rooms(
+                        self.rooms[len(self.rooms) - 1], new_room)
                 self.rooms.append(new_room)
 
     def create_room(self):
         """Creates a room with a random size and location."""
-        w = randint(MIN_ROOM_SIZE, MAX_ROOM_SIZE)
-        h = randint(MIN_ROOM_SIZE, MAX_ROOM_SIZE)
-        return Room(randint(0, MAP_WIDTH - w - 1), randint(0, MAP_HEIGHT - h - 1), w, h)
+        w = randint(map_settings.MIN_ROOM_SIZE, map_settings.MAX_ROOM_SIZE)
+        h = randint(map_settings.MIN_ROOM_SIZE, map_settings.MAX_ROOM_SIZE)
+        return Room(randint(0, self.width - w - 1), randint(0, self.height - h - 1), w, h)
 
     def valid_room(self, room):
         """Checks whether a potential room would intersect any existing rooms."""

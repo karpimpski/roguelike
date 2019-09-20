@@ -1,11 +1,13 @@
-wall = 256
-floor = 257
-player = 258
-orc = 259
-troll = 260
-scroll = 261
-healingpotion = 262
-sword = 263
-shield = 264
-stairsdown = 265
-dagger = 266
+"""Image ASCII codes."""
+
+WALL = 256
+FLOOR = 257
+PLAYER = 258
+ORC = 259
+TROLL = 260
+SCROLL = 261
+HEALING_POTION = 262
+SWORD = 263
+SHIELD = 264
+STAIRS_DOWN = 265
+DAGGER = 266

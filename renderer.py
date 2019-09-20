@@ -1,6 +1,5 @@
 import tcod
 from fov import FOV
-from map_classes.map_constants import *
 
 
 class Renderer:
@@ -14,13 +13,14 @@ class Renderer:
         self.fov.compute(x, y)
         self.draw_tiles(self.fov)
         self.draw_entities(entities, self.fov)
-        tcod.console_blit(self.console, 0, 0, screen_width, screen_height, 0, 0, 0)
+        tcod.console_blit(self.console, 0, 0, screen_width,
+                          screen_height, 0, 0, 0)
         tcod.console_flush()
 
     def draw_tiles(self, fov):
         """Draws all tiles in list."""
-        for y in range(MAP_HEIGHT):
-            for x in range(MAP_WIDTH):
+        for y in range(self.game_map.height):
+            for x in range(self.game_map.width):
                 if tcod.map_is_in_fov(fov.map, x, y):
                     self.draw_light_tile(
                         self.console, x, y, self.game_map.tiles[x][y].img
@@ -39,7 +39,8 @@ class Renderer:
     def draw_entity(self, con, entity, fov):
         """Draws a single entity."""
         if tcod.map_is_in_fov(fov.map, entity.x, entity.y):
-            tcod.console_put_char(con, entity.x, entity.y, entity.tile, tcod.BKGND_NONE)
+            tcod.console_put_char(con, entity.x, entity.y,
+                                  entity.tile, tcod.BKGND_NONE)
 
     def draw_light_tile(self, con, x, y, tile):
         """Draws tile with a light tint."""

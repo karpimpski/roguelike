@@ -1,4 +1,9 @@
+"""Room class."""
+
+
 class Room:
+    """Room class containing methods to determine its center and intersections."""
+
     def __init__(self, x, y, w, h):
         self.x1 = x
         self.y1 = y

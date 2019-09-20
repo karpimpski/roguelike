@@ -1,15 +1,14 @@
+"""Starts application and contains the Game class."""
+
 import tcod
 import tcod.event
+
+import settings
 import input_handler
 import imgs
-
 from entity import Entity
 from renderer import Renderer
 from map_classes.game_map import GameMap
-
-# Constants.
-screen_width = 80
-screen_height = 50
 
 
 class Game:
@@ -28,8 +27,8 @@ class Game:
             "sprites.png", tcod.FONT_TYPE_GREYSCALE | tcod.FONT_LAYOUT_TCOD, 32, 10
         )
         console = tcod.console_init_root(
-            screen_width,
-            screen_height,
+            settings.SCREEN_WIDTH,
+            settings.SCREEN_HEIGHT,
             "Roguelike",
             False,
             tcod.RENDERER_OPENGL2,
@@ -49,26 +48,27 @@ class Game:
     def create_entities(self):
         """Creates and returns all entities in game (PLAYER MUST BE FIRST ENTITY - TEMP)."""
         (player_x, player_y) = self.game_map.rooms[0].center()
-        player = Entity(player_x, player_y, imgs.player)
-        orc = Entity(player_x + 2, player_y + 2, imgs.orc)
+        player = Entity(player_x, player_y, imgs.PLAYER)
+        orc = Entity(player_x + 2, player_y + 2, imgs.ORC)
         return [player, orc]
 
     def game_loop(self):
-        """Renders the game map and entities, checks for input, then performs an action based on input. Loops while window is open."""
+        """Renders game, checks for input, then performs an action based on input while running."""
         while True:
             self.renderer.render_all(
-                self.entities, screen_width, screen_height, self.player.x, self.player.y
+                self.entities, settings.SCREEN_WIDTH, settings.SCREEN_HEIGHT,
+                self.player.x, self.player.y
             )
             action = self.check_for_input()
             if action is not None:
                 self.perform(action)
 
     def check_for_input(self):
-        """Checks for input and returns an object containing instructions (e.g. { 'move': (0, 1) } or { 'exit': True })."""
+        """Checks for window events and passes key events to input handler."""
         for event in tcod.event.get():
             if event.type == "QUIT":
                 raise SystemExit
-            elif event.type == "KEYDOWN":
+            if event.type == "KEYDOWN":
                 return input_handler.handle_keys(event.sym)
 
     def perform(self, action):
@@ -84,4 +84,4 @@ class Game:
 
 
 if __name__ == "__main__":
-    game = Game()
+    Game()
